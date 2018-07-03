@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.debugjoker.dao.SuccessChooseDao">
+
+    <insert id="insertSuccessChoose">
+         INSERT ignore into t_success_choose(course_id,student_id,state)
+         VALUES (#{courseId},#{studentId},0)
+    </insert>
+
+    <select id="queryByIdwithCourse" resultType="me.debugjoker.entity.SuccessChoose">
+        SELECT
+        t_success_choose.course_id,
+        t_success_choose.student_id,
+        t_success_choose.state,
+        t_success_choose.create_time,
+        t_course.course_id "course.courseId",
+        t_course.course_name "course.course_name",
+        t_course.course_number "course.course_number",
+        t_course.start_time "course.start_time",
+        t_course.end_time "course.end_time",
+        t_course.create_time "course.create_time"
+        FROM t_success_choose
+        INNER JOIN t_course ON t_course.course_id = t_success_choose.course_id
+        WHERE t_success_choose.course_id = #{courseId}
+        AND t_success_choose.student_id = #{studentId}
+    </select>
+
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.debugjoker.dao.UserDao">
+
+    <select id="queryById" resultType="me.debugjoker.entity.User">
+        select student_id,student_name,student_className,student_passWord,identity
+        from t_user
+        where student_id = #{studentId}
+    </select>
+
+    <insert id="addUser">
+        insert ignore into t_user(student_id,student_name,student_className,student_passWord,identity)
+        values(#{studentId},#{studentName},#{className},#{passWord},1)
+    </insert>
+
+    <delete id="removeUser">
+        delete from t_user
+        where student_id = #{studentId}
+    </delete>
+
+    <update id="changeUser">
+        update t_user
+        set student_name = #{studentName}, student_className = #{className},student_passWord = #{passWord}
+        where student_id = #{studentId}
+    </update>
+
+    <select id="queryAll" resultType="me.debugjoker.entity.User">
+        SELECT * FROM t_user
+    </select>
+
+</mapper>

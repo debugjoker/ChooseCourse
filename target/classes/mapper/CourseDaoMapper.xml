@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.debugjoker.dao.CourseDao">
+
+    <update id="reduceNumber">
+        UPDATE t_course
+        SET course_number = course_number - 1
+        WHERE course_id = #{courseId}
+        AND start_time <![CDATA[ <= ]]>   #{chooseTime}
+        AND end_time >= #{chooseTime}
+        AND course_number > 0
+    </update>
+
+    <select id="queryById" resultType="me.debugjoker.entity.Course">
+        SELECT course_id,course_name,course_number,start_time,end_time,create_time
+        FROM t_course
+        WHERE course_id = #{courseId}
+    </select>
+
+    <select id="queryAll" resultType="me.debugjoker.entity.Course">
+        SELECT course_id,course_name,course_number,start_time,end_time,create_time
+        FROM t_course
+        ORDER BY create_time desc
+        LIMIT #{limit},#{offset}
+    </select>
+
+    <delete id="deleteCourseById">
+        DELETE FROM t_course
+        WHERE course_id = #{courseId}
+    </delete>
+
+    <select id="queryChooseCourseDetail" resultType="me.debugjoker.entity.User">
+        select u.*
+        FROM t_user u
+        INNER JOIN t_success_choose c
+        ON c.student_id = u.student_id
+        WHERE c.course_id = #{courseId}
+    </select>
+
+    <insert id="addCourse">
+        INSERT INTO t_course(course_name,course_number,start_time,end_time)
+        VALUES (#{courseName},#{courseNumber},#{startTime},#{endTime})
+    </insert>
+
+    <update id="changeCourseInfo">
+        UPDATE t_course
+        SET course_name = #{courseName},course_number = #{courseNumber},start_time = #{startTime},end_time = #{endTime}
+        WHERE course_id = #{courseId}
+    </update>
+
+    <select id="queryCourseBlurry" resultType="me.debugjoker.entity.Course">
+        SELECT * FROM t_course
+        WHERE course_name
+        LIKE CONCAT(CONCAT('%', #{courseName}), '%')
+    </select>
+
+</mapper>
